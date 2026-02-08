@@ -6,4 +6,6 @@ import com.pm.patient_service.module.Patient;
 
 public interface PatientRepository extends JpaRepository<Patient, UUID> {
 
+    boolean existsByEmail(String email);
+
 }
