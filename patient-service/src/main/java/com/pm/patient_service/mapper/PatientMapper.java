@@ -29,4 +29,12 @@ public class PatientMapper {
         patient.setRegisteredDate(LocalDate.parse(patientRequestDTO.getRegisteredDate()));
         return patient;
     }
+
+    public static void updateDTO(PatientRequestDTO patientRequestDTO, Patient patient) {
+        patient.setName(patientRequestDTO.getName());
+        patient.setDateOfBirth(LocalDate.parse(patientRequestDTO.getDateOfBirth()));
+        patient.setAddress(patientRequestDTO.getAddress());
+        patient.setEmail(patientRequestDTO.getEmail());
+        patient.setRegisteredDate(LocalDate.parse(patientRequestDTO.getRegisteredDate()));
+    }
 }

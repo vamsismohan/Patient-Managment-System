@@ -1,6 +1,7 @@
 package com.pm.patient_service.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,16 +11,20 @@ import com.pm.patient_service.dto.PatientRequestDTO;
 import com.pm.patient_service.dto.PatientResponseDTO;
 import com.pm.patient_service.service.PatientService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/patients")
+@Tag(name = "Patient", description = "Patient Services")
 public class PatientController {
 
     private PatientService patientService;
@@ -29,16 +34,33 @@ public class PatientController {
     }
 
     @GetMapping
+    @Operation(description = "get list of patients")
     public ResponseEntity<List<PatientResponseDTO>> getPatients() {
         List<PatientResponseDTO> patientResponseDTO = patientService.getPatients();
         return ResponseEntity.ok().body(patientResponseDTO);
     }
-    
-    @PostMapping("/createPatient")
+
+    @PostMapping
+    @Operation(description = "create patient")
     public ResponseEntity<PatientResponseDTO> createPatient(@Valid @RequestBody PatientRequestDTO patientRequestDTO) {
         PatientResponseDTO patientResponseDTO = patientService.createPatient(patientRequestDTO);
         return ResponseEntity.ok().body(patientResponseDTO);
     }
-    
+
+    @PutMapping("/{id}")
+    @Operation(description = "update patient")
+    public ResponseEntity<PatientResponseDTO> updatePatient(@PathVariable UUID id,
+            @Valid @RequestBody PatientRequestDTO patientRequestDTO) {
+            PatientResponseDTO patientResponseDTO = patientService.updatePatient(id, patientRequestDTO);
+        return ResponseEntity.ok().body(patientResponseDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(description = "delete patient")
+    public ResponseEntity<Void> deletePatient(@PathVariable UUID id) {
+        patientService.deletePatient(id);
+        return ResponseEntity.noContent().build();
+    } 
+
 
 }
